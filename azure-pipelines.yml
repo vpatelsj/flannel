@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: AzureCLI@2
+    displayName: Build component binaries, containers and packages
+    inputs:
+      azureSubscription: aks deploy msi - dev
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -euo pipefail
+        export DOCKER_BUILDKIT=1
+        az acr login --name acsdevdeployment
+        make clean
+        TAG=$(git rev-parse --short=7 HEAD) REGISTRY=acsdevdeployment.azurecr.io/flannel ARCH=amd64 make image
+        docker push acsdevdeployment.azurecr.io/flannel:$TAG
