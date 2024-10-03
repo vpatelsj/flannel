@@ -426,7 +426,7 @@ func (ksm *kubeSubnetManager) AcquireLease(ctx context.Context, attrs *lease.Lea
 			return nil, err
 		}
 		if !containsCIDR(ksm.subnetConf.Network.ToIPNet(), cidr) {
-			return nil, fmt.Errorf("subnet %q specified in the flannel net config doesn't contain %q PodCIDR of the %q node", ksm.subnetConf.Network, cidr, ksm.nodeName)
+			log.Infof("subnet %q specified in the flannel net config doesn't contain %q PodCIDR of the %q node", ksm.subnetConf.Network, cidr, ksm.nodeName)
 		}
 
 		lease.Subnet = ip.FromIPNet(cidr)
