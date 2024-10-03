@@ -22,4 +22,4 @@ steps:
         az acr login --name acsdevdeployment
         make clean
         TAG=$(git rev-parse --short=7 HEAD) REGISTRY=acsdevdeployment.azurecr.io/flannel ARCH=amd64 make image
-        docker push acsdevdeployment.azurecr.io/flannel:$TAG
+        TAG=$(git rev-parse --short=7 HEAD) docker push acsdevdeployment.azurecr.io/flannel:$TAG
